@@ -23,6 +23,11 @@
     state: directory
   when: user_to_deploy_ssh_keys == "root"
 
+- name: ensure that the authorized_key_file exists
+  file:
+    path: "{{ authorized_key_file }}"
+    state: touch
+
 - name: set the authorized keys
   lineinfile:
     path: "{{ authorized_key_file }}"
