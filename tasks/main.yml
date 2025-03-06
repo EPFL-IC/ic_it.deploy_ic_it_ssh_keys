@@ -47,7 +47,8 @@
     - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEvIJvPvxITjK3gjxxdGw7/2j0H252VpkcqnhmC/fIjS luethi@epfl.ch"
     - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmKW7CzBVa/qFoNAPUaanULFivMRhQRrj+yDYy9GE9i87RTGuI5/04yL7RaO8jn8PmVGleM8cQx2wUCCVKAHTuWLKFodH91cj61ApzsFdzCPVeDWi92yjcqX7LZHvLanWc5FVTNu8CboZktPrjAgXSZAG0IIl2VImpfOMcJ8szqmJOml7097YJ7AmYPZ1pLKZkPM3sENw1t1u7tLFIRTdKMTrD6ef/+ef8jfF1S4YPIic1TqIc3Dppdi3WgmBn//cG2768P/VjHx4kCnqVjAY8ZXsxKQ/EQxUnBHbDUmFIIAu3AiL0axJmrY7CyAXTFlEhBb4JAoBBmLkGQeUR/qzL/4azcHg7eYuQ9T4ETY1EqL3cQl3Pk+pKrqkyXLaCH37OQyRcBw5mvwjPIQxNM/BRw91tLTTRMSGHBitzweZ+fWQSJxZ6kLj117HImYTZcL/T1skFjVAPUPX0yJffEhv1BLwL9ymIDL6oSaQ+l6Mas6wTuI6NjrfeJzIKFzjf5rU= penaruiz@icdhcp-1-073.epfl.ch"
     - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKvl1lPXAG/QI6iHWg4XjSU2gaQkRscUC8HCCErhlquY svaucher@IC-IT-LPC08"
-    
+    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDGmkz8rY3mU7w01D4ncXiW5S9Jl75LagPenj+jgPlVr GitLab CI"
+
 - name: revoke the keys that should be revoked
   lineinfile:
     path: "{{ authorized_key_file }}"
