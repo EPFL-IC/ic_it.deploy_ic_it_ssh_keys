@@ -1,65 +1,16 @@
 ---
 # tasks file for ic_it.deploy_ic_it_ssh_keys
 
-- name: set the correct destination for the authorized key file (non root user)
-  set_fact:
-    authorized_key_file: "/home/{{ user_to_deploy_ssh_keys }}/.ssh/authorized_keys"
-  when: user_to_deploy_ssh_keys != "root"
-
-- name: set the correct destination for the authorized keys file (for root user)
-  set_fact:
-    authorized_key_file: "/root/.ssh/authorized_keys"
-  when: user_to_deploy_ssh_keys == "root"
-
-- name: ensure that the .ssh folder exists (non root user)
-  file:
-    path: "/home/{{ user_to_deploy_ssh_keys }}/.ssh"
-    state: directory
-  when: user_to_deploy_ssh_keys != "root"
-
-- name: ensure that the .ssh folder exists (root user)
-  file:
-    path: "/root/.ssh"
-    state: directory
-  when: user_to_deploy_ssh_keys == "root"
-
-- name: ensure that the authorized_key_file exists
-  file:
-    path: "{{ authorized_key_file }}"
-    state: touch
-
 - name: set the authorized keys
-  lineinfile:
-    path: "{{ authorized_key_file }}"
+  ansible.posix.authorized_key:
+    user: "{{ user_to_deploy_ssh_keys }}"
     state: present
-    line: "{{ item }}"
-  with_items:
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxP8lr3suohvNqTZyzqIud0YTAj9Z7vpqanAUy0EfGv3oeFmEaYPWr7psTyH7Zqo/wt/py/+XejmobextPSFUrPTgmrj7q9a2kEMXb9QIuhp9w4p0ARgOb3WHV6ulo37G/f4v3QOidCkYSJ0osOvVR9DTa2t32NtqKIy0q9FmKdxD8bUx1BxUdv1rzokzzQh6XNsGJRhtnTPc6FgIt9ClLRcgZDYx5MXUv6kRc0HuS5mGO6Py0GQEz50P3YB3vJEoejOuNykme+Vuj0R/kt/Sik8yR9Mev+pRpxViJAfCOIBnAyHzSIOmB7qQED1Q+nZruRHPXwDDq9grugjlf8Vi5Q== carlos.perez@epfl.ch"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAPV2KNH2uT4Elx+oRTXch+5da19mAQp18h+yDnTglrV carlos.perez@epfl.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAqGPKT9T1UQY+0CxlyvzHGnqVQS4kt6YcLR+OzIEu8QGEOO3zEzxHxO30TewSiGHjS9jGmacDQwSy9rqZNRekRRwGzjiHh4WJCFskgShG/2OV//E7E+te5NUcwpZP5wcrTbGlrcppUJ7H7y2tRsUV2P6hjeT9s0X5aw6uvQmvE6k= ecuyer@disunm1"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDt26rQ7DgiXQJ7Cu7hxfHfCqUnR7lxy/1vOIApujOMw7xWvx/mhb20PtA+22t8s2rl15FN2adrw0PaMXQhGk+G+hFquNuDiUCIYdpncfoGrETKkqk7o+fxCUxng94aAXKNUZiwIk3DPpJ0XhU+4JhaKkJJ5ld0l22JQZBwiWX0ciSwmkVNOI+wREEcEyRCfubPwmUJswUSeQYqho2xX320QDC8m8Fdabtbs02DdA88VJMf26VXnze96CwjAVm2FUROQwnoDDrUXKh/vom4e7Z+uVvLzh1Oa3XG93NPd1/Mx9ndSBHZgINgkT2yWXNw5r8PAEjf+xbZjaBlXK+unfSIa7YICF35y2Ju3ne+4iVEUioitMsmveNG4km3eLmllyZr2jI2VI8w5ALjC6/ujSJBXOlrmw6BVSyCY+ypWBm2Ri35RD+ku/dUxX+mcqbJk/GaOGk6sx29OHnMxIC3Gpun1UW/PkRs2NUhyXuXfyh5on+nhtlCrcZp3KkBxY2KsJCfD0ziaky145l6l+y2PF/oOaTRHfnUih5Snva2nepbRNTGC8abaPbjckymY9j2P9vLaCcnhIH3ZeGgDbuJ61Jo8/ZyNx8qujDsjFQ6Rc5phGTdbzyaR1nCoAAxWNwLmMu19gOCa8rCuN/9MujVJtXO9o75NwQBRfBcjWEI/oqPMw== ecuyer@sidimac9.epfl.ch"
-    - "ecdsa-sha2-nistp521 AAAAE2VjZHNhLXNoYTItbmlzdHA1MjEAAAAIbmlzdHA1MjEAAACFBAGJz9UdTrSmQFOssts8SMKUo1zgvIbRdYAhUNMbsjckLTIXE83HG2WiR5ujlSGS9q/gqygSRvOrYTJAvzQHRVnvFAEqlwsAinr+tVqjn+bROIi1BXgMTRujHS/sjdBTRnqxlYGg5f+MaJYWP6nhAAONcuc1Jr/q0f381p67bRKUZKNu3w== ecuyer@sidimac9.epfl.ch"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdrbhglc6nn9JDkx9g4kkud9ixyYRA3hr0d3j+hv21A ecuyer@sidimac9.epfl.ch"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDMyWRMhKJXecRCHz4Zck0Nz2Pq+ryOsPRsvmq8gySR/ emmanuel.jaep+ed25519@epfl.ch"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIF8wyZ7y/pONQ67MbvzPuiJ5oT9mFLBSZSBMssZOQm/ pascal.bangerter@pbasite.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnYYp+NFkMtxxEoDopqS5dTDu3AYU38T8v27Mko5q48Cv2iD1UO5I8U21qRCYK19K6FEUfDycUeMosFmAItJmmMevnL4fX/bwBOCeq9nfegWgmJfpAmZiyws95SKDlTu8DhVeASge5N1QAC3SsG9PjYDFzmiMYBeiw/YmuZc9ydNObgz/0uxbKfBvJST3JfU6ytrqFEgW/yO/s/JEFMrLtvIoTPUDcdUMise97Fcf/kqVrthWlWptCFgQKWiU6XRSG+PYBpNyY5PzLBuGO82x6Z5dDRd1bYx6rVXObEdSkhIpwYiWXcR5Jj2TxN1GiVczNzgmQzdAxpSCt7H2+nc0krYJhjlwpmRSxPpmchlW4BQwY9i7yVNVQH/UnUCXPUGkRj0DpbmcQYALSdQONeezt9vsoXzJ4uZmI/aRq9KhRtFZEU9WAtO2uGKBMz1s33rso/m0nVPgFLtnFnQPGJXTqvi5oodG1/YiTgDzbzWpvG3U0F0epHWq1hMEvYcZFJVE= pascal@cdm-cdmpc34-vm2"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEvIJvPvxITjK3gjxxdGw7/2j0H252VpkcqnhmC/fIjS luethi@epfl.ch"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKvl1lPXAG/QI6iHWg4XjSU2gaQkRscUC8HCCErhlquY svaucher@IC-IT-LPC08"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDGmkz8rY3mU7w01D4ncXiW5S9Jl75LagPenj+jgPlVr GitLab CI"
+    key: "{{ item }}"
+  with_items: "{{ ic_it_ssh_keys_present }}"
 
 - name: revoke the keys that should be revoked
-  lineinfile:
-    path: "{{ authorized_key_file }}"
+  ansible.posix.authorized_key:
+    user: "{{ user_to_deploy_ssh_keys }}"
     state: absent
-    line: "{{ item }}"
-  with_items:
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBwiMftRitwBcSvlK6CFbcHZRi/isEksmHRjIqfpIMUHI7rzkIT3IH07q9QyyPxKBfw2JkcNljvdBMS6hdeny4dLUeb/kNHPPHZ9Xb/egw7FvLHTYc+i+rzZLQ4NmIL+qTmNrBBA/Lj+gVhidu7Rt2y/5o/7HFDMz9i3lLJkS+zgqULrJN+nptf6kVY9slryHYuLuJgmcTM+I0VcSm1NAYxxAAkIUFRv3ydQgB1j0FhQk89I/ovlBbblTBxN50vTYmiWSC9FlSEqRZqF/48wCGtn0SMmjuea/lqy9BDOlRGITHS9phlfULXms9A62INCNjBEBDesd0qV7Fo2fYFogb jaep@tsf-476-wpa-6-095.epfl.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8v1CzpAw8DkXVtDwgzEU3Ed0lI0ARB/KNcr87ekrRe5Z+zAC04rMz8ohu4Ug4bkojgQXWxVro0Dqc3NWAw5jDYzSSEkjoc1RrgLZlqU/w8SbNU90ByjmoAOBV2nLljFhOM783WyLCORvUqJAJh6CmeARX9rymOowAhriE9QXK4RjWtQ+So9A4JdMmQDQ/vJsTSD3woOGHVfG5UySrR6/FgUpdVqgnIm/MuoH4kXK9GKSMwBZjrwUaQ1txUJbdN0F1vqE9ZBI7lQOY+W1sqoBbv1sfaakMF0vhoE5x1tAXXuB5rycpi6PYTtu3XAAWLoZ7iQIyVeVVNljar16+alESdj3XQvCPrqLxIDTxOfpfl+iX4aebv545/+3Mg19tYRkXk1+Qo+qjvcoReRF02gMb35sccJNRByYZhZpSiZn27ic74ffFGY7nfdYi7MkBzlmbVk/KHKmugD+S4W4RHXXcw5zWiAkgvyc5zqJM6QGPJJzhwGpQFqi9JCPAo20XTpU= sourythep.samoutphonh@epfl.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCyzMKsfWhlkUOyyynDbhz60YghhPwL6ld9X5JDpqjmZSQy+GjSicgbGyDRhD4Xihe8hC2Th/zRfWZlwPfL9GWbThQn2hHwmHRt+UgbjoMpqOFwJy75JIUlouXyuLxkUobcwbzihLeuSgdXS0K6TgxKfF/cE+lywT0QhluLPzafn2uG9q6D+SWGFfGdUn0GT/wUErCN6xJKEorHaTTT89kMId1njDsxsKYRgtKWaVlBZsCGttphLNMiA+dk9yP/nBSg7iDGWkvU3qEuwl7EYpn2zxAGajSt5k6iTBm8CGKsHR3cAL1Gso8tPv4BnMunruFCCSU1s54Bet4CbdrJWtZXf8FfLGgE7BGWeyhX3GOV8Rahk5TbyLAuezXt3mbkg2T/oBU2K8FjoQAVUUAfBjlLTDSLGfP5NcbFjnKBgIqplY1f8E26lNjp28B1pVOjarFJq4JnIOdo2c3aFmPKEcmO4Nxjfz7YeecMdK7nmIwYtAsEO3wJufne/AsUQ8lSmE8= ivan.forte@epfl.ch"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIENczF54t5Mzc9pjITY9uwQpNjvIK3PD7Y3/YJzJHpM1 awx-icadmin010"
-    - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSK7s6nNmeTZMkzf9uAydNIY1YqmRgVLoEfAh8of6Qn yoann.moulin+ed25519@epfl.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCxKr0oUVLo0zi5v0hfRGbj98Trsi0BwiOMysFhOQEtCHOBEgMHPCfQq8k6Ck+nGirZ+qWJu3Bspgap1i/R8dy4IDtdsD1bAgk2+Vep/W73aOS795uhAe/K7rO/locN7tKgpdM198GmqbO00Ycz+JVJVbbPdMavcyTJi7m7KdRMQfYNtRESa84ChALDS55DKQqODCZfqV0+EjT5tbR3GLnsJQlBUCwWb7K+b/xgOIVh1/UfAkgYiDsXvDF+Th66hXuDNV1ZHwHCoJzep7IyaD8B0NsbTh08E5lwIRtT0FKFgQiTgU6NUfXdw7j83ascI0+VnJZA6ExHhHwlloujKU6XdDu3BCmcrAB3wKy+xS3iOPukdZPCwiBSV6EegezZj/vht6dfAWEi8i6HvA04xSwjUf+LsHv+EyTjU4gq6/W1kPRv1nQWKn31dGE+t5hDLWqHQ8cBfa6r2TChDz0d7hax3JzBByJbbYXgYdwUnKh6VHn3l9tuPg9iAC+g/ZGS5MDmnz3VmbV/VMPCoLaScy471Qahwm+9w6XCJuL0Of3NRU8tD4FXQr8W1rg3zUQdJjYVRB083XYTpHXZ48X4UHwmP4nRsQaRcdeRHx3dw018Jf7O+VxfG9YtRefNjNIYVUUrcVtxNt1FpWfV3Ab22clCmeqT6WgryuoI5UxJOeyryw== yoann.moulin@epfl.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDDfweku6YhkwOZfhlt0LICdnrYCduqU/Jx+34+GjTEzYlRIur5Mm8nNdQPGGldBYURMwTUouxsHWwkQzlwGeyM0A/leNx7qUtCrQY98mom40F963pXttP0JnHQfO/nz9NIOTC7itm1oq2pHcwOc+NGbCakZVVpSnUqLNUZhWqlC/gLlAlgzqX579zoQxTDihfXm6Z/LQiDm155+WRZIrwN46EY2mDg+By/25rSYTyHOPpWB3i1NYx9EXLritJIoacieZSKot5rXo2LKR5ogmfYVhGh2USP+o15NolJetgMWeJemZoOPJ1nfzwy6B4c9H3VnnLoYJoGHdvr1Y/WuP70vJSHSmr/wXWI9QMOfkGv3RZwXRPbc92d/1ZLu3yU915P/4Rm/Eg2ipCuvPGfmPiAEx6RtrAPP5pxY3HkC/ORMoxmOMmQmgzHQcvjDHveDDGUQWP7urL9WKBaae8fXZv8eVnxvpJ/kZ3DvkF5aW1ejD8vHoxoGbIRkPaCpA+9hQU= jeremy.noth@epfl.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC33LnUJvs7/ewgk5pfXEtK/76fO293ZhknJ/aryyfcBMv3o5bsanAY9mMPXq3mTP1Z+87mSG2tPIyxCmEozBFXHt20epo0IM1RuQ7Go2IMZ4xNFe8XDcb7cG/mfNEzYZQ+3nktsFHtjY/8KelaAbevWDLgFhynVSapIKJcIwZqYWkTFwZGT2/dV15RHNwGgLU3MvsKCB0QhzQal5uLC5oczYS9P1Oz2/sySP/mEMt7X22VZPIVogXkldm+T5oZymA0VUHg//SAFiUzA5wrpIUV4oVXZU++yl4u5qqncW/4w6mqtsIFSeAecf8eOATkNBbzqYvg328AtgOuPriPYslu0cEunGPzEuNKxZAtlvzj7MhkHJJX4J2rm7QcjDsbQrNDfSb2an8RZm/D6Y+QirW2uNMJOYlEPJdGovT5llxwpzmo3E61IMgDelfiBUDiKY1nc5ZKWJRiv6gr1tYhxPqZ0OS8oaM5J23P9erV1KIKxu65uVXe7wyigy+Bctuag3s= ivan.forte@epfl.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmKW7CzBVa/qFoNAPUaanULFivMRhQRrj+yDYy9GE9i87RTGuI5/04yL7RaO8jn8PmVGleM8cQx2wUCCVKAHTuWLKFodH91cj61ApzsFdzCPVeDWi92yjcqX7LZHvLanWc5FVTNu8CboZktPrjAgXSZAG0IIl2VImpfOMcJ8szqmJOml7097YJ7AmYPZ1pLKZkPM3sENw1t1u7tLFIRTdKMTrD6ef/+ef8jfF1S4YPIic1TqIc3Dppdi3WgmBn//cG2768P/VjHx4kCnqVjAY8ZXsxKQ/EQxUnBHbDUmFIIAu3AiL0axJmrY7CyAXTFlEhBb4JAoBBmLkGQeUR/qzL/4azcHg7eYuQ9T4ETY1EqL3cQl3Pk+pKrqkyXLaCH37OQyRcBw5mvwjPIQxNM/BRw91tLTTRMSGHBitzweZ+fWQSJxZ6kLj117HImYTZcL/T1skFjVAPUPX0yJffEhv1BLwL9ymIDL6oSaQ+l6Mas6wTuI6NjrfeJzIKFzjf5rU= penaruiz@icdhcp-1-073.epfl.ch"
-    - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDB54R5ADTgOz59M9JOEBg0pIFstoVhdU0NMidmii4Vx3kMy018d/InpilZs4VkNGSOrIa3VK2LZw8cN63bpL1Zd53t0C4nfD+uhopWSuyKq+l+ug9qwbbT7xutw0Ig1rJCdGhIBrM6Irbf5qQJ1L3XBC9ZJF2jsSHXerDG9P7DN4D+86BVpwTPV+pJNbCxFWl3NYxKGaq+NAtryrRYoenQ2mM6ZhzUrabrPWeVTdT5y2CpB4peOFFPaQL9kBGSGLMt5Ftnhmu+s1Z69mh0xprljbMmCg/v2vA+5ZWrzCZCH2V4+L/68A3vOH5GpR+6AW8Gizwa2dfHHTyIySjbqV3VXoqLpcTgZtq0plZTqnQBnVYdUIqRpdLmMvNURASSUKDZlkIGlYR4dOybS4EEkgkicf47l9qtYStM2gDuVUTjePrIUOxo3s1CUchE9biJ7hT9llBKxCgbakCHGwOuCODb1yQeHctmwB7cNM0sdjnwaX2ejEw+Ijc5gQUGgJ3eJ30= gmeylan@gmail.com"
+    key: "{{ item }}"
+  with_items: "{{ ic_it_ssh_keys_absent }}"
