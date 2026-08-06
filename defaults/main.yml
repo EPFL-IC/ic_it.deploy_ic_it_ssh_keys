@@ -16,6 +16,7 @@ ic_it_ssh_keys_present:
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEvIJvPvxITjK3gjxxdGw7/2j0H252VpkcqnhmC/fIjS luethi@epfl.ch"
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKvl1lPXAG/QI6iHWg4XjSU2gaQkRscUC8HCCErhlquY svaucher@IC-IT-LPC08"
   - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDGmkz8rY3mU7w01D4ncXiW5S9Jl75LagPenj+jgPlVr GitLab CI"
+  - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF1BFJQl7/5Z/QyHHZfObu/bncpoJq/X8kBQONQw418U megaron.meystre@epfl.ch"
 
 ic_it_ssh_keys_absent:
   - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBwiMftRitwBcSvlK6CFbcHZRi/isEksmHRjIqfpIMUHI7rzkIT3IH07q9QyyPxKBfw2JkcNljvdBMS6hdeny4dLUeb/kNHPPHZ9Xb/egw7FvLHTYc+i+rzZLQ4NmIL+qTmNrBBA/Lj+gVhidu7Rt2y/5o/7HFDMz9i3lLJkS+zgqULrJN+nptf6kVY9slryHYuLuJgmcTM+I0VcSm1NAYxxAAkIUFRv3ydQgB1j0FhQk89I/ovlBbblTBxN50vTYmiWSC9FlSEqRZqF/48wCGtn0SMmjuea/lqy9BDOlRGITHS9phlfULXms9A62INCNjBEBDesd0qV7Fo2fYFogb jaep@tsf-476-wpa-6-095.epfl.ch"
